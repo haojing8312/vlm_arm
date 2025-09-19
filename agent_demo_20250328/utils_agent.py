@@ -81,6 +81,7 @@ LED灯改变颜色，比如：llm_led('帮我把LED灯的颜色改为贝加尔�
 '''
 
 def agent_plan(PROMPT='先回到原点，再把LED灯改为墨绿色，然后把绿色方块放在篮球上'):
-    print('Agent智能体编排动作')
-    agent_plan = llm_yi(PROMPT)
+    print('Agent智能体编排动作：{}'.format(PROMPT))
+    # agent_plan = llm_yi(PROMPT)
+    agent_plan = private_llm(PROMPT)  # 使用你的私有化模型
     return agent_plan

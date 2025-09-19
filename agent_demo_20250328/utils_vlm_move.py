@@ -51,7 +51,9 @@ def vlm_move(PROMPT='帮我把绿色方块放在小猪佩奇上', input_way='key
         try:
             print('    尝试第 {} 次访问多模态大模型'.format(n))
             # result = yi_vision_api(PROMPT, img_path='temp/vl_now.jpg')  # yi_vision定位能力出现波动，暂时换用QwenVL系列
-            result = QwenVL_api(PROMPT, img_path='temp/vl_now.jpg')
+            # result = QwenVL_api(PROMPT, img_path='temp/vl_now.jpg')
+            result = private_vlm_api(PROMPT, img_path='temp/vl_now.jpg')
+
             print('    多模态大模型调用成功！')
             print(result)
             break
@@ -88,7 +90,8 @@ def vlm_vqa(PROMPT='请数一数图中中几个方块', input_way='keyboard'):
     print('第二步，给出的指令是：', PROMPT)
     top_view_shot(check=False)
     img_path = 'temp/vl_now.jpg'
-    result = QwenVL_api(PROMPT, img_path='temp/vl_now.jpg', vlm_option=1)
+    # result = QwenVL_api(PROMPT, img_path='temp/vl_now.jpg', vlm_option=1)
+    result = private_vlm_api(PROMPT, img_path='temp/vl_now.jpg', vlm_option=1)
     print('    多模态大模型调用成功！')
     # print(result)
     GPIO.cleanup()            # 释放GPIO pin channel

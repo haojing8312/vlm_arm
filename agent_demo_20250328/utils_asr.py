@@ -10,18 +10,19 @@ import numpy as np
 import os
 import sys
 from API_KEY import *
+from utils_tts import play_wav
 
 # 确定麦克风索引号
 # import sounddevice as sd
 # print(sd.query_devices())
 
-def record(MIC_INDEX=0, DURATION=5):
+def record(MIC_INDEX=3, DURATION=5):
     '''
     调用麦克风录音，需用arecord -l命令获取麦克风ID
     DURATION，录音时长
     '''
     print('开始 {} 秒录音'.format(DURATION))
-    os.system('sudo arecord -D "plughw:{}" -f dat -c 1 -r 16000 -d {} temp/speech_record.wav'.format(MIC_INDEX, DURATION))
+    os.system('sudo arecord -D "plughw:{},0" -f dat -c 1 -r 16000 -d {} temp/speech_record.wav'.format(MIC_INDEX, DURATION))
     print('录音结束')
 
 def record_auto(MIC_INDEX=1):
@@ -125,6 +126,7 @@ import appbuilder
 # 配置密钥
 os.environ["APPBUILDER_TOKEN"] = APPBUILDER_TOKEN
 asr = appbuilder.ASR() # 语音识别组件
+
 def speech_recognition(audio_path='temp/speech_record.wav'):
     '''
     AppBuilder-SDK语音识别组件
@@ -141,6 +143,16 @@ def speech_recognition(audio_path='temp/speech_record.wav'):
         
         # 获取音频数据
         frames = wav_file.readframes(num_frames)
+    
+    # 在调用ASR前，先播放原始录音，便于人工听音检查
+    try:
+        if os.path.exists(audio_path):
+            print('播放原始录音：{}'.format(audio_path))
+            play_wav(audio_path)
+        else:
+            print('未找到录音文件：{}'.format(audio_path))
+    except Exception as _e:
+        print('播放原始录音失败：{}'.format(_e))
         
     # 向API发起请求
     content_data = {"audio_format": "wav", "raw_audio": frames, "rate": 16000}

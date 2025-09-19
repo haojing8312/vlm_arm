@@ -109,3 +109,6 @@ logs/
 Thumbs.db
 Open3D/
 agent_demo_20250328/API_KEY.py
+# 安装包和构建工具
+Miniconda3-latest-Linux-aarch64.sh
+cmake-*.sh
